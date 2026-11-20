@@ -39,24 +39,33 @@ const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&@';
 function dechiffrer(element, delai) {
   if (mouvementReduit) return;
   const texte = element.textContent;
-  let etape = 0;
 
+  // On bloque la largeur du mot à sa taille finale :
+  // les lettres au hasard n'ont pas toutes la même largeur,
+  // sans ça le nom changerait de taille et la page « sauterait »
+  element.style.width = element.getBoundingClientRect().width + 'px';
+
+  let etape = 0;
   setTimeout(() => {
     const minuteur = setInterval(() => {
       element.textContent = texte
         .split('')
-        .map((lettre, i) => (i < etape / 4 ? lettre : caracteres[Math.floor(Math.random() * caracteres.length)]))
+        .map((lettre, i) => (i < etape / 2 ? lettre : caracteres[Math.floor(Math.random() * caracteres.length)]))
         .join('');
       etape++;
-      if (etape > texte.length * 4) {
+      if (etape > texte.length * 2) {
         clearInterval(minuteur);
         element.textContent = texte;
+        element.style.width = ''; // on libère la largeur à la fin
       }
     }, 35);
   }, delai);
 }
 
-document.querySelectorAll('[data-dechiffre]').forEach((element, i) => dechiffrer(element, 150 + i * 400));
+// On attend que les polices soient chargées pour mesurer la bonne largeur
+document.fonts.ready.then(() => {
+  document.querySelectorAll('[data-dechiffre]').forEach((element, i) => dechiffrer(element, 100 + i * 250));
+});
 
 
 // ---------- 3. Empreinte SHA-256 ----------
