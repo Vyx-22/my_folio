@@ -1,0 +1,155 @@
+/* =========================================================
+   style.css : ce que Tailwind ne fait pas tout seul
+   (animations, effets au survol, petits composants)
+   ========================================================= */
+
+/* ---------- Boutons de l'accueil ---------- */
+.bouton {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.bouton:hover { transform: translateY(-2px); }
+
+/* ---------- Ruban doré qui parcourt la carte ---------- */
+/* Le trait est « pointillé » avec un seul long tiret qui avance */
+.ruban {
+  stroke-dasharray: 140 900;
+  animation: ruban 7s linear infinite;
+}
+.ruban--court {
+  stroke-dasharray: 120 700;
+  animation-duration: 6s;
+}
+@keyframes ruban {
+  from { stroke-dashoffset: 1040; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* ---------- Curseur du terminal ---------- */
+.curseur {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  background: #E2C9A5;
+  vertical-align: -2px;
+  animation: clignote 1s steps(1) infinite;
+}
+@keyframes clignote { 50% { opacity: 0; } }
+
+/* ---------- Cartes de compétences ---------- */
+.carte-comp {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: #EDE1CC;
+  border: 0.5px solid #CDBBA0;
+  border-radius: 16px;
+  padding: 0.9rem 1rem;
+  font-size: 0.9rem;
+  transition: transform 0.25s ease;
+}
+.carte-comp:hover { transform: translateY(-4px); }
+.carte-comp i { font-size: 1.4rem; color: #561622; }
+
+/* Carte mise en avant (Sécurité) */
+.carte-comp--accent { background: #561622; color: #EDE1CC; border-color: #561622; }
+.carte-comp--accent i { color: #E2C9A5; }
+
+.etiquette {
+  margin-left: auto;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.6rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: #E0C9C3;
+  color: #561622;
+  white-space: nowrap;
+}
+.carte-comp--accent .etiquette { background: rgba(226, 201, 165, 0.2); color: #E2C9A5; }
+
+/* ---------- Triangle de chiffres binaires ---------- */
+.triangle {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.3rem;
+  text-align: right;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  line-height: 1.55;
+  letter-spacing: 0.25em;
+  color: #561622;
+  pointer-events: none;
+}
+.triangle span { transition: opacity 0.6s ease; }
+
+/* ---------- Cadre photo (légèrement penché) ---------- */
+.cadre-photo {
+  background: #EDE1CC;
+  border-radius: 26px;
+  padding: 12px;
+  transform: rotate(-2deg);
+  transition: transform 0.4s ease;
+}
+.cadre-photo:hover { transform: rotate(0deg); }
+
+.monogramme {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  border: 1px solid #E2C9A5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 2.6rem;
+  color: #E2C9A5;
+}
+
+/* ---------- Projets ---------- */
+.survol { transition: transform 0.25s ease; }
+.survol:hover { transform: translateY(-4px); }
+
+/* Si une capture d'écran ne se charge pas, on cache l'image cassée */
+.capture--vide img { display: none; }
+.capture--vide { min-height: 140px; }
+
+/* ---------- Cartes de contact ---------- */
+.lien-contact {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.9rem 1rem;
+  border-radius: 18px;
+  transition: transform 0.25s ease;
+}
+.lien-contact:hover { transform: translateX(6px); }
+
+.rond {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ---------- Apparition des sections au défilement ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ---------- Respect des personnes qui désactivent les animations ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}
